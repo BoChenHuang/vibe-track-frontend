@@ -9,6 +9,9 @@ export interface Mood {
   label: string;
   sub: string;
   tags: MoodTag[];
+  gradA?: string;
+  gradB?: string;
+  signals?: number;
 }
 
 export interface Track {

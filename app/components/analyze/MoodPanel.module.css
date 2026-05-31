@@ -1,0 +1,97 @@
+.panel {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+}
+
+.hero {
+  height: 200px;
+  position: relative;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, var(--bg-1) 100%);
+}
+
+.body {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  padding: 3px 9px;
+  border-radius: var(--radius-xs);
+}
+
+.signals {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink-4);
+}
+
+.label {
+  font-size: 2.375rem;
+  font-weight: 700;
+  color: var(--ink-0);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.sub {
+  font-size: 0.9375rem;
+  color: var(--ink-3);
+  margin: 0;
+  line-height: 1.55;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+  letter-spacing: 0.02em;
+}
+
+.tagPrimary {
+  background: rgba(122, 92, 255, 0.12);
+  border-color: rgba(122, 92, 255, 0.3);
+  color: var(--ink-1);
+}
+
+.tagDot {
+  width: 6px;
+  height: 6px;
+  background: var(--neon-b);
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px rgba(122, 92, 255, 0.55);
+  flex-shrink: 0;
+}

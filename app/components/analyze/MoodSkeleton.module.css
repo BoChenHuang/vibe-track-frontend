@@ -1,0 +1,65 @@
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+}
+
+.hero {
+  height: 200px;
+  background: linear-gradient(
+    90deg,
+    rgba(122, 92, 255, 0.1) 0px,
+    rgba(122, 92, 255, 0.22) 300px,
+    rgba(122, 92, 255, 0.1) 600px
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+.body {
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.line {
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.09) 300px,
+    rgba(255, 255, 255, 0.04) 600px
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+.lineSm { width: 110px; height: 10px; }
+.lineLg { width: 88%; height: 38px; border-radius: 8px; }
+.lineMd { width: 62%; height: 13px; }
+
+.tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  height: 28px;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.09) 300px,
+    rgba(255, 255, 255, 0.04) 600px
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.8s infinite linear;
+}

@@ -1,0 +1,225 @@
+.card {
+  position: relative;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  box-shadow: 0 14px 40px -8px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Cover ── */
+
+.cover {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+
+.coverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.coverFallback {
+  width: 100%;
+  height: 100%;
+  background: var(--grad-primary);
+  opacity: 0.22;
+}
+
+.coverShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, transparent 35%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 48%);
+  pointer-events: none;
+}
+
+/* ── Badges ── */
+
+.rankBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-0);
+  letter-spacing: 0.04em;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  padding: 3px 7px;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  line-height: 1;
+}
+
+.popBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--neon-d);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  padding: 3px 7px;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(184, 255, 60, 0.2);
+  line-height: 1;
+}
+
+/* ── Play controls (conditional on preview_url) ── */
+
+.playBtn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 150ms, transform 150ms, border-color 150ms, color 150ms;
+  color: var(--ink-1);
+}
+
+.card:hover .playBtn {
+  opacity: 1;
+}
+
+.playBtn:hover {
+  transform: scale(1.1);
+}
+
+.playBtnActive {
+  color: var(--neon-d);
+  border-color: rgba(184, 255, 60, 0.4);
+  opacity: 1;
+}
+
+.wave {
+  position: absolute;
+  bottom: 15px;
+  left: 10px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity 150ms;
+}
+
+.card:hover .wave {
+  opacity: 1;
+}
+
+.waveActive {
+  opacity: 1;
+}
+
+.waveBar {
+  width: 3px;
+  background: var(--neon-d);
+  border-radius: 1.5px;
+  animation: waveAnim 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes waveAnim {
+  from { height: 4px; opacity: 0.6; }
+  to { height: 14px; opacity: 1; }
+}
+
+/* ── Content area ── */
+
+.content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink-0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.artist {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.reason {
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  line-height: 1.55;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  min-height: 50px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.spotifyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: rgba(184, 255, 60, 0.08);
+  border: 1px solid rgba(184, 255, 60, 0.2);
+  border-radius: 100px;
+  color: var(--neon-d);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 150ms;
+}
+
+.spotifyBtn:hover {
+  background: rgba(184, 255, 60, 0.16);
+}
+
+.previewStatus {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  color: var(--ink-4);
+  margin-left: auto;
+  white-space: nowrap;
+}

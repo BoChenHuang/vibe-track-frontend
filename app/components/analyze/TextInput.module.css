@@ -1,0 +1,77 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 160px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 14px 16px;
+  color: var(--ink-1);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  resize: vertical;
+  transition: border-color 150ms, box-shadow 150ms;
+  box-sizing: border-box;
+  display: block;
+}
+
+.textarea::placeholder {
+  color: var(--ink-4);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--neon-b);
+  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.18);
+}
+
+.footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.chip {
+  padding: 4px 11px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  color: var(--ink-3);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 150ms, border-color 150ms, background 150ms;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  color: var(--ink-1);
+  border-color: rgba(122, 92, 255, 0.4);
+  background: rgba(122, 92, 255, 0.08);
+}
+
+.count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink-4);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 5px;
+}
+
+.countWarn {
+  color: var(--neon-warn);
+}
