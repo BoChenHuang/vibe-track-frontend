@@ -1,0 +1,51 @@
+:root {
+  /* Backgrounds */
+  --bg-0: #07060d;
+  --bg-1: #0d0a18;
+  --bg-2: #14112a;
+
+  /* Surfaces */
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-2: rgba(255, 255, 255, 0.06);
+
+  /* Borders */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* Ink / Text */
+  --ink-0: #ffffff;
+  --ink-1: rgba(255, 255, 255, 0.92);
+  --ink-2: rgba(255, 255, 255, 0.62);
+  --ink-3: rgba(255, 255, 255, 0.40);
+  --ink-4: rgba(255, 255, 255, 0.22);
+
+  /* Neon accent (default: neon theme) */
+  --neon-a: #ff3cac;
+  --neon-b: #7a5cff;
+  --neon-c: #00e5ff;
+  --neon-d: #b8ff3c;
+  --neon-warn: #ffb547;
+  --neon-danger: #ff5573;
+  --neon-ok: #6cffb4;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, #ff3cac 0%, #7a5cff 50%, #00e5ff 100%);
+
+  /* Radius */
+  --radius-xs: 6px;
+  --radius-s: 10px;
+  --radius-m: 14px;
+  --radius-l: 20px;
+  --radius-xl: 28px;
+
+  /* Shadows */
+  --shadow-soft: 0 8px 30px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glow-a: 0 0 0 1px rgba(255, 60, 172, 0.30), 0 12px 40px -8px rgba(255, 60, 172, 0.45);
+
+  /* Spacing (8px base) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+}
