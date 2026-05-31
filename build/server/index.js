@@ -1,10 +1,10 @@
 import { PassThrough } from "node:stream";
 import { createReadableStreamFromReadable } from "@react-router/node";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, ServerRouter, UNSAFE_withComponentProps, UNSAFE_withErrorBoundaryProps, isRouteErrorResponse } from "react-router";
+import { Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, ServerRouter, UNSAFE_withComponentProps, UNSAFE_withErrorBoundaryProps, isRouteErrorResponse } from "react-router";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { jsx, jsxs } from "react/jsx-runtime";
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
 //#region \0rolldown/runtime.js
 var __defProp = Object.defineProperty;
 var __exportAll = (all, no_symbols) => {
@@ -157,6 +157,202 @@ function AppProvider({ children }) {
 		children
 	});
 }
+function useApp() {
+	const ctx = useContext(AppContext);
+	if (!ctx) throw new Error("useApp must be used within AppProvider");
+	return ctx;
+}
+var Atmosphere_module_default = {
+	atmosphere: "_atmosphere_4pwq6_1",
+	orb: "_orb_4pwq6_9",
+	orb1: "_orb1_4pwq6_16",
+	drift1: "_drift1_4pwq6_1",
+	orb2: "_orb2_4pwq6_25",
+	drift2: "_drift2_4pwq6_1",
+	orb3: "_orb3_4pwq6_34",
+	drift3: "_drift3_4pwq6_1",
+	grain: "_grain_4pwq6_43"
+};
+//#endregion
+//#region app/components/layout/Atmosphere.tsx
+function Atmosphere() {
+	return /* @__PURE__ */ jsxs("div", {
+		className: Atmosphere_module_default.atmosphere,
+		"aria-hidden": "true",
+		children: [
+			/* @__PURE__ */ jsx("div", { className: `${Atmosphere_module_default.orb} ${Atmosphere_module_default.orb1}` }),
+			/* @__PURE__ */ jsx("div", { className: `${Atmosphere_module_default.orb} ${Atmosphere_module_default.orb2}` }),
+			/* @__PURE__ */ jsx("div", { className: `${Atmosphere_module_default.orb} ${Atmosphere_module_default.orb3}` }),
+			/* @__PURE__ */ jsx("div", {
+				className: Atmosphere_module_default.grain,
+				children: /* @__PURE__ */ jsxs("svg", {
+					width: "100%",
+					height: "100%",
+					xmlns: "http://www.w3.org/2000/svg",
+					children: [/* @__PURE__ */ jsxs("filter", {
+						id: "grain-filter",
+						children: [/* @__PURE__ */ jsx("feTurbulence", {
+							type: "fractalNoise",
+							baseFrequency: "0.65",
+							numOctaves: "3",
+							stitchTiles: "stitch"
+						}), /* @__PURE__ */ jsx("feColorMatrix", {
+							type: "saturate",
+							values: "0"
+						})]
+					}), /* @__PURE__ */ jsx("rect", {
+						width: "100%",
+						height: "100%",
+						filter: "url(#grain-filter)"
+					})]
+				})
+			})
+		]
+	});
+}
+var UsagePill_module_default = {
+	pill: "_pill_lpqhd_1",
+	dot: "_dot_lpqhd_16",
+	dotGreen: "_dotGreen_lpqhd_23",
+	dotRed: "_dotRed_lpqhd_28"
+};
+//#endregion
+//#region app/components/ui/UsagePill.tsx
+function UsagePill() {
+	const { state } = useApp();
+	const remaining = state.maxUsage - state.usage;
+	const exhausted = remaining <= 0;
+	return /* @__PURE__ */ jsxs("div", {
+		className: UsagePill_module_default.pill,
+		children: [
+			/* @__PURE__ */ jsx("span", { className: `${UsagePill_module_default.dot} ${exhausted ? UsagePill_module_default.dotRed : UsagePill_module_default.dotGreen}` }),
+			Math.max(0, remaining),
+			"/",
+			state.maxUsage,
+			" RATE / HR"
+		]
+	});
+}
+var Topbar_module_default = {
+	topbar: "_topbar_1mkar_1",
+	brand: "_brand_1mkar_15",
+	nav: "_nav_1mkar_24",
+	navLink: "_navLink_1mkar_34",
+	navLinkActive: "_navLinkActive_1mkar_50",
+	right: "_right_1mkar_55"
+};
+//#endregion
+//#region app/components/layout/Topbar.tsx
+function Topbar() {
+	return /* @__PURE__ */ jsxs("header", {
+		className: Topbar_module_default.topbar,
+		children: [
+			/* @__PURE__ */ jsx("span", {
+				className: Topbar_module_default.brand,
+				children: "VibeTrack"
+			}),
+			/* @__PURE__ */ jsxs("nav", {
+				className: Topbar_module_default.nav,
+				"aria-label": "Main navigation",
+				children: [/* @__PURE__ */ jsx(NavLink, {
+					to: "/",
+					end: true,
+					className: ({ isActive }) => `${Topbar_module_default.navLink}${isActive ? ` ${Topbar_module_default.navLinkActive}` : ""}`,
+					children: "Analyze"
+				}), /* @__PURE__ */ jsx(NavLink, {
+					to: "/dashboard",
+					className: ({ isActive }) => `${Topbar_module_default.navLink}${isActive ? ` ${Topbar_module_default.navLinkActive}` : ""}`,
+					children: "Dashboard"
+				})]
+			}),
+			/* @__PURE__ */ jsx("div", {
+				className: Topbar_module_default.right,
+				children: /* @__PURE__ */ jsx(UsagePill, {})
+			})
+		]
+	});
+}
+//#endregion
+//#region app/lib/icons.tsx
+function CloseIcon({ size = 16, className }) {
+	return /* @__PURE__ */ jsxs("svg", {
+		width: size,
+		height: size,
+		viewBox: "0 0 24 24",
+		fill: "none",
+		stroke: "currentColor",
+		strokeWidth: "2",
+		strokeLinecap: "round",
+		className,
+		children: [/* @__PURE__ */ jsx("line", {
+			x1: "18",
+			y1: "6",
+			x2: "6",
+			y2: "18"
+		}), /* @__PURE__ */ jsx("line", {
+			x1: "6",
+			y1: "6",
+			x2: "18",
+			y2: "18"
+		})]
+	});
+}
+//#endregion
+//#region app/lib/utils.ts
+function formatCountdown(seconds) {
+	if (seconds < 60) return `${seconds}s`;
+	if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+	return `${Math.floor(seconds / 3600)}h ${Math.floor(seconds % 3600 / 60)}m`;
+}
+var RateLimitToast_module_default = {
+	toast: "_toast_wfsl8_1",
+	slideIn: "_slideIn_wfsl8_1",
+	label: "_label_wfsl8_19",
+	closeBtn: "_closeBtn_wfsl8_24"
+};
+//#endregion
+//#region app/components/ui/RateLimitToast.tsx
+function isRateLimitError(e) {
+	return typeof e === "object" && e !== null && "error" in e && e.error === "rate_limited";
+}
+function RateLimitToast() {
+	const { state, dispatch } = useApp();
+	const { error } = state;
+	const [remaining, setRemaining] = useState(0);
+	useEffect(() => {
+		if (!isRateLimitError(error)) return;
+		setRemaining(error.retry_after);
+		const id = setInterval(() => {
+			setRemaining((prev) => {
+				if (prev <= 1) {
+					clearInterval(id);
+					dispatch({ type: "dismissError" });
+					return 0;
+				}
+				return prev - 1;
+			});
+		}, 1e3);
+		return () => clearInterval(id);
+	}, [error, dispatch]);
+	if (!isRateLimitError(error)) return null;
+	return /* @__PURE__ */ jsxs("div", {
+		className: RateLimitToast_module_default.toast,
+		role: "alert",
+		children: [
+			/* @__PURE__ */ jsx("span", {
+				className: RateLimitToast_module_default.label,
+				children: "速率限制"
+			}),
+			/* @__PURE__ */ jsxs("span", { children: ["請稍後再試 — ", formatCountdown(remaining)] }),
+			/* @__PURE__ */ jsx("button", {
+				className: RateLimitToast_module_default.closeBtn,
+				onClick: () => dispatch({ type: "dismissError" }),
+				"aria-label": "關閉",
+				children: /* @__PURE__ */ jsx(CloseIcon, { size: 14 })
+			})
+		]
+	});
+}
 //#endregion
 //#region app/root.tsx
 var root_exports = /* @__PURE__ */ __exportAll({
@@ -188,7 +384,12 @@ function Layout({ children }) {
 	});
 }
 var root_default = UNSAFE_withComponentProps(function Root() {
-	return /* @__PURE__ */ jsx(AppProvider, { children: /* @__PURE__ */ jsx(Outlet, {}) });
+	return /* @__PURE__ */ jsxs(AppProvider, { children: [
+		/* @__PURE__ */ jsx(Atmosphere, {}),
+		/* @__PURE__ */ jsx(Topbar, {}),
+		/* @__PURE__ */ jsx(Outlet, {}),
+		/* @__PURE__ */ jsx(RateLimitToast, {})
+	] });
 });
 var ErrorBoundary = UNSAFE_withErrorBoundaryProps(function ErrorBoundary({ error }) {
 	if (isRouteErrorResponse(error) && error.status === 404) return /* @__PURE__ */ jsx("div", { children: "404 — Page not found" });
@@ -221,8 +422,8 @@ var dashboard_default = UNSAFE_withComponentProps(function DashboardPage() {
 //#region \0virtual:react-router/server-manifest
 var server_manifest_default = {
 	"entry": {
-		"module": "/assets/entry.client-D0_5fq24.js",
-		"imports": ["/assets/jsx-runtime-BrOl_4xq.js"],
+		"module": "/assets/entry.client-O7i1QjvI.js",
+		"imports": ["/assets/jsx-runtime-Cc6DCyMV.js"],
 		"css": []
 	},
 	"routes": {
@@ -239,9 +440,9 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": true,
-			"module": "/assets/root-CYdyY29r.js",
-			"imports": ["/assets/jsx-runtime-BrOl_4xq.js"],
-			"css": ["/assets/root-BmG3vUdv.css"],
+			"module": "/assets/root-DQLZhR5A.js",
+			"imports": ["/assets/jsx-runtime-Cc6DCyMV.js"],
+			"css": ["/assets/root-DpnwfAm4.css"],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
 			"clientMiddlewareModule": void 0,
@@ -260,8 +461,8 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/_index-B_UQ2Ohx.js",
-			"imports": ["/assets/jsx-runtime-BrOl_4xq.js"],
+			"module": "/assets/_index-CXnSvXkq.js",
+			"imports": ["/assets/jsx-runtime-Cc6DCyMV.js"],
 			"css": [],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -281,8 +482,8 @@ var server_manifest_default = {
 			"hasClientMiddleware": false,
 			"hasDefaultExport": true,
 			"hasErrorBoundary": false,
-			"module": "/assets/dashboard-QTtVs5da.js",
-			"imports": ["/assets/jsx-runtime-BrOl_4xq.js"],
+			"module": "/assets/dashboard-NAuIaiB0.js",
+			"imports": ["/assets/jsx-runtime-Cc6DCyMV.js"],
 			"css": [],
 			"clientActionModule": void 0,
 			"clientLoaderModule": void 0,
@@ -290,8 +491,8 @@ var server_manifest_default = {
 			"hydrateFallbackModule": void 0
 		}
 	},
-	"url": "/assets/manifest-3b6f36c5.js",
-	"version": "3b6f36c5",
+	"url": "/assets/manifest-6dbed601.js",
+	"version": "6dbed601",
 	"sri": void 0
 };
 //#endregion

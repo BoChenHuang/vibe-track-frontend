@@ -1,0 +1,1 @@
+import{O as e,t}from"./jsx-runtime-Cc6DCyMV.js";var n=t(),r=()=>[{title:`Dashboard — VibeTrack`}],i=e(function(){return(0,n.jsx)(`div`,{children:`Dashboard`})});export{i as default,r as meta};

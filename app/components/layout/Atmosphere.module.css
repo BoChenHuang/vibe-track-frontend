@@ -1,0 +1,86 @@
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* outer div: handles transform animation only */
+.orb {
+  position: absolute;
+}
+
+/* inner pseudo-element: handles visual (blur + blend) */
+.orb::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  filter: blur(60px);
+  mix-blend-mode: screen;
+}
+
+.orb1 {
+  width: 560px;
+  height: 560px;
+  top: -80px;
+  left: -60px;
+  animation: drift1 18s ease-in-out infinite alternate;
+}
+
+.orb1::after {
+  background: radial-gradient(circle, rgba(255, 60, 172, 0.55) 0%, rgba(255, 60, 172, 0.18) 50%, transparent 70%);
+}
+
+.orb2 {
+  width: 480px;
+  height: 480px;
+  top: 25%;
+  right: -80px;
+  animation: drift2 22s ease-in-out infinite alternate;
+}
+
+.orb2::after {
+  background: radial-gradient(circle, rgba(122, 92, 255, 0.50) 0%, rgba(122, 92, 255, 0.16) 50%, transparent 70%);
+}
+
+.orb3 {
+  width: 420px;
+  height: 420px;
+  bottom: -60px;
+  left: 25%;
+  animation: drift3 16s ease-in-out infinite alternate;
+}
+
+.orb3::after {
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.45) 0%, rgba(0, 229, 255, 0.14) 50%, transparent 70%);
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+}
+
+@keyframes drift1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(200px, 150px) scale(1.15); }
+}
+
+@keyframes drift2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-160px, 180px) scale(0.9); }
+}
+
+@keyframes drift3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(120px, -160px) scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb {
+    animation: none;
+  }
+}

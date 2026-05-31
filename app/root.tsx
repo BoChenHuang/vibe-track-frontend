@@ -1,5 +1,8 @@
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import { AppProvider } from './store/AppContext';
+import { Atmosphere } from './components/layout/Atmosphere';
+import { Topbar } from './components/layout/Topbar';
+import { RateLimitToast } from './components/ui/RateLimitToast';
 import './styles/index.css';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -24,7 +27,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function Root() {
   return (
     <AppProvider>
+      <Atmosphere />
+      <Topbar />
       <Outlet />
+      <RateLimitToast />
     </AppProvider>
   );
 }

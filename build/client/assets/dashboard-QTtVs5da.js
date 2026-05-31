@@ -1,1 +1,0 @@
-import{D as e,t}from"./jsx-runtime-BrOl_4xq.js";var n=t(),r=()=>[{title:`Dashboard — VibeTrack`}],i=e(function(){return(0,n.jsx)(`div`,{children:`Dashboard`})});export{i as default,r as meta};

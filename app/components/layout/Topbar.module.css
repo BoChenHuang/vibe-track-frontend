@@ -1,0 +1,58 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 var(--space-3);
+  background: var(--bg-0);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-0);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: 4px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: var(--radius-l);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color 150ms, background 150ms;
+}
+
+.navLink:hover {
+  color: var(--ink-1);
+}
+
+.navLinkActive {
+  background: var(--surface-2);
+  color: var(--ink-0);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
