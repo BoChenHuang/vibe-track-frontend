@@ -1,9 +1,57 @@
+import { useEffect } from 'react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import { AppProvider } from './store/AppContext';
+import { useApp } from './store/AppContext';
+import { getHealth, getRateLimit } from './lib/api';
 import { Atmosphere } from './components/layout/Atmosphere';
 import { Topbar } from './components/layout/Topbar';
 import { RateLimitToast } from './components/ui/RateLimitToast';
+import { BootingScreen } from './components/ui/BootingScreen';
 import './styles/index.css';
+
+function AppInit() {
+  const { dispatch } = useApp();
+
+  useEffect(() => {
+    let cancelled = false;
+    let retryTimeout: ReturnType<typeof setTimeout>;
+
+    async function tryHealth(attempt: number): Promise<void> {
+      try {
+        await getHealth();
+        if (cancelled) return;
+        dispatch({ type: 'setBootingStatus', status: 'ready' });
+        try {
+          const rl = await getRateLimit();
+          if (!cancelled) {
+            dispatch({
+              type: 'updateRateLimit',
+              remaining: rl.remaining,
+              limit: rl.limit,
+              resetAt: rl.reset_at,
+            });
+          }
+        } catch { /* rate limit sync is non-critical */ }
+      } catch {
+        if (cancelled) return;
+        if (attempt < 3) {
+          retryTimeout = setTimeout(() => { void tryHealth(attempt + 1); }, 5000);
+        } else {
+          dispatch({ type: 'setBootingStatus', status: 'error' });
+        }
+      }
+    }
+
+    void tryHealth(1);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(retryTimeout);
+    };
+  }, [dispatch]);
+
+  return null;
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -27,6 +75,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function Root() {
   return (
     <AppProvider>
+      <AppInit />
+      <BootingScreen />
       <Atmosphere />
       <Topbar />
       <Outlet />

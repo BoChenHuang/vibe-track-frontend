@@ -87,16 +87,16 @@
   line-height: 1.4;
 }
 
-.pulseOrb {
-  width: 8px;
-  height: 8px;
-  background: #fff;
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
   border-radius: 50%;
-  animation: orbPulse 1s ease-in-out infinite;
+  animation: spin 600ms linear infinite;
   flex-shrink: 0;
 }
 
-@keyframes orbPulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.6); opacity: 0.5; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useApp } from '../store/AppContext';
-import { mockAnalyze } from '../mock/mockAnalyze';
+import { analyzeVibe, RateLimitApiError } from '../lib/api';
 import { InputCard } from '../components/analyze/InputCard';
 import { MoodSection } from '../components/analyze/MoodSection';
 import { ResultsSection } from '../components/analyze/ResultsSection';
+import { AudioPlayer } from '../components/analyze/AudioPlayer';
 import type { AnalyzeResult, HistoryEntry } from '../types/api';
 import styles from './AnalyzePage.module.css';
 
@@ -11,14 +12,33 @@ export function AnalyzePage() {
   const { state, dispatch } = useApp();
   const { loading, inputMode, textValue, imageFile } = state;
 
+  const [playingId, setPlayingId] = useState<string | null>(null);
+
+  function handlePlayToggle(id: string) {
+    setPlayingId((prev) => (prev === id ? null : id));
+  }
+
+  const playingTrack = state.result?.tracks.find((t) => t.id === playingId) ?? null;
+  const previewSrc = playingTrack?.preview_url ?? null;
+
   const handleSubmit = useCallback(async () => {
     if (loading) return;
     if (inputMode === 'text' && textValue.trim() === '') return;
     if (inputMode === 'image' && imageFile === null) return;
 
     dispatch({ type: 'submit' });
+    const minDelay = new Promise<void>((resolve) => setTimeout(resolve, 400));
     try {
-      const response = await mockAnalyze();
+      const { data: response, headers } = await analyzeVibe({
+        mode: inputMode,
+        text: inputMode === 'text' ? textValue : undefined,
+        image: inputMode === 'image' ? imageFile : null,
+        market: state.market,
+        limit: state.trackCount,
+      });
+
+      await minDelay;
+
       const ts = Date.now();
       const result: AnalyzeResult = {
         mood: response.mood,
@@ -36,12 +56,27 @@ export function AnalyzePage() {
         tracks: response.tracks,
       };
       dispatch({ type: 'submitResolved', result, entry });
-    } catch {
-      // real error handling in api-integration change
-    }
-  }, [loading, inputMode, textValue, imageFile, state.market, dispatch]);
 
-  // ⌘/Ctrl + Enter shortcut — register once, read latest handleSubmit via ref
+      if (headers.remaining !== null || headers.limit !== null) {
+        dispatch({
+          type: 'updateRateLimit',
+          remaining: headers.remaining,
+          limit: headers.limit,
+          resetAt: headers.resetAt,
+        });
+      }
+
+      setPlayingId(null);
+    } catch (err) {
+      await minDelay;
+      if (err instanceof RateLimitApiError) {
+        dispatch({ type: 'addToast', payload: err.body });
+      } else {
+        dispatch({ type: 'addToast', payload: '分析失敗，請稍後再試' });
+      }
+    }
+  }, [loading, inputMode, textValue, imageFile, state.market, state.trackCount, dispatch]);
+
   const handleSubmitRef = useRef(handleSubmit);
   handleSubmitRef.current = handleSubmit;
 
@@ -75,8 +110,10 @@ export function AnalyzePage() {
       </div>
 
       <section className={styles.resultsSection}>
-        <ResultsSection />
+        <ResultsSection playingId={playingId} onPlayToggle={handlePlayToggle} />
       </section>
+
+      <AudioPlayer src={previewSrc} onEnded={() => setPlayingId(null)} />
     </main>
   );
 }

@@ -1,0 +1,33 @@
+.root {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 64px 0;
+}
+
+.icon {
+  color: var(--neon-b);
+  opacity: 0.4;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.heading {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.sub {
+  font-size: 0.875rem;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.65; transform: scale(1.08); }
+}

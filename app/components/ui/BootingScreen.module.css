@@ -1,0 +1,76 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(6, 6, 10, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  animation: fadeIn 400ms ease-out both;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--line);
+  border-top-color: var(--neon-b);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+.label {
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.errorDot {
+  width: 12px;
+  height: 12px;
+  background: var(--neon-a);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--neon-a);
+}
+
+.errorHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-1);
+  margin: 0;
+}
+
+.errorSub {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.errorBtn {
+  margin-top: 8px;
+  padding: 8px 24px;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 150ms, color 150ms;
+}
+
+.errorBtn:hover {
+  border-color: var(--ink-2);
+  color: var(--ink-1);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

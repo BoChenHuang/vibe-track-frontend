@@ -57,6 +57,8 @@ export interface HistoryEntry {
   tracks: Track[];
 }
 
+export type BootingStatus = 'booting' | 'ready' | 'error';
+
 export type Theme = 'neon' | 'sunset' | 'aurora' | 'mono';
 
 export type Page = 'analyze' | 'dashboard';
@@ -70,6 +72,11 @@ export interface AnalyzeResult {
   ts: number;
 }
 
+export interface ToastItem {
+  id: string;
+  payload: RateLimitError | string;
+}
+
 export interface AppState {
   page: Page;
   inputMode: InputMode;
@@ -79,11 +86,15 @@ export interface AppState {
   trackCount: number;
   loading: boolean;
   result: AnalyzeResult | null;
-  error: RateLimitError | string | null;
+  toasts: ToastItem[];
   history: HistoryEntry[];
   rateTimes: number[];
   usage: number;
   maxUsage: number;
+  rateRemaining: number | null;
+  rateLimit: number | null;
+  rateResetAt: number | null;
+  bootingStatus: BootingStatus;
   theme: Theme;
 }
 
@@ -100,6 +111,9 @@ export type AppAction =
   | { type: 'tickRate' }
   | { type: 'submit' }
   | { type: 'submitResolved'; result: AnalyzeResult; entry: HistoryEntry }
-  | { type: 'dismissError' }
   | { type: 'replayHistory'; entry: HistoryEntry }
-  | { type: 'force429' };
+  | { type: 'force429' }
+  | { type: 'updateRateLimit'; remaining: number | null; limit: number | null; resetAt: number | null }
+  | { type: 'addToast'; payload: RateLimitError | string }
+  | { type: 'dismissToast'; id: string }
+  | { type: 'setBootingStatus'; status: BootingStatus };

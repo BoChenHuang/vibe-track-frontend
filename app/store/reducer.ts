@@ -9,11 +9,15 @@ export const initialState: AppState = {
   trackCount: 8,
   loading: false,
   result: null,
-  error: null,
+  toasts: [],
   history: [],
   rateTimes: [],
   usage: 0,
   maxUsage: 5,
+  rateRemaining: null,
+  rateLimit: null,
+  rateResetAt: null,
+  bootingStatus: 'booting',
   theme: 'neon',
 };
 
@@ -36,7 +40,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
     case 'tickRate':
       return state;
     case 'submit':
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: true };
     case 'submitResolved':
       return {
         ...state,
@@ -45,8 +49,14 @@ export function appReducer(state: AppState, action: AppAction): AppState {
         history: [action.entry, ...state.history],
         usage: state.usage + 1,
       };
-    case 'dismissError':
-      return { ...state, error: null };
+    case 'addToast':
+      return {
+        ...state,
+        loading: false,
+        toasts: [...state.toasts, { id: String(Date.now()), payload: action.payload }],
+      };
+    case 'dismissToast':
+      return { ...state, toasts: state.toasts.filter((t) => t.id !== action.id) };
     case 'replayHistory':
       return {
         ...state,
@@ -60,6 +70,15 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       };
     case 'force429':
       return { ...state, usage: state.maxUsage };
+    case 'updateRateLimit':
+      return {
+        ...state,
+        rateRemaining: action.remaining,
+        rateLimit: action.limit,
+        rateResetAt: action.resetAt,
+      };
+    case 'setBootingStatus':
+      return { ...state, bootingStatus: action.status };
     default:
       return state;
   }

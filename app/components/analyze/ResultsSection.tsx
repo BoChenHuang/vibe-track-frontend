@@ -1,43 +1,22 @@
-import { useState } from 'react';
 import { useApp } from '../../store/AppContext';
 import { SongCard } from './SongCard';
-import type { Track } from '../../types/api';
+import { ResultsEmpty } from './ResultsEmpty';
 import styles from './ResultsSection.module.css';
 
-const PLACEHOLDER_TRACK: Track = {
-  id: 'placeholder',
-  title: '',
-  artist: '',
-  spotify_url: '#',
-  preview_url: null,
-  popularity: null,
-  album_image_url: null,
-  reason: '',
-};
+interface ResultsSectionProps {
+  playingId: string | null;
+  onPlayToggle: (id: string) => void;
+}
 
-export function ResultsSection() {
+export function ResultsSection({ playingId, onPlayToggle }: ResultsSectionProps) {
   const { state } = useApp();
   const { result } = state;
-  const [playingId, setPlayingId] = useState<string | null>(null);
-
-  function handlePlayToggle(id: string) {
-    setPlayingId((prev) => (prev === id ? null : id));
-  }
 
   if (result === null) {
     return (
       <div className={styles.section}>
         <div className={styles.grid}>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <SongCard
-              key={i}
-              track={PLACEHOLDER_TRACK}
-              rank={i + 1}
-              playingId={null}
-              onPlayToggle={() => {}}
-              placeholder
-            />
-          ))}
+          <ResultsEmpty />
         </div>
       </div>
     );
@@ -63,7 +42,7 @@ export function ResultsSection() {
             track={track}
             rank={i + 1}
             playingId={playingId}
-            onPlayToggle={handlePlayToggle}
+            onPlayToggle={onPlayToggle}
           />
         ))}
       </div>

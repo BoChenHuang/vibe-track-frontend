@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
 import { useApp } from '../../store/AppContext';
 import { SparkleIcon } from '../../lib/icons';
 import styles from './ControlsRow.module.css';
-
-const LOADING_LABELS = ['Reading mood', 'Mapping spectrum', 'Picking tracks', 'Tuning order'];
 
 const MARKETS = [
   { value: 'TW', label: '🇹🇼 Taiwan' },
@@ -21,19 +18,9 @@ interface ControlsRowProps {
 export function ControlsRow({ onSubmit }: ControlsRowProps) {
   const { state, dispatch } = useApp();
   const { loading, inputMode, textValue, imageFile, market, trackCount } = state;
-  const [labelIdx, setLabelIdx] = useState(0);
 
   const disabled =
     loading || (inputMode === 'text' ? textValue.trim() === '' : imageFile === null);
-
-  useEffect(() => {
-    if (!loading) {
-      setLabelIdx(0);
-      return;
-    }
-    const id = setInterval(() => setLabelIdx((i) => (i + 1) % LOADING_LABELS.length), 700);
-    return () => clearInterval(id);
-  }, [loading]);
 
   return (
     <div className={styles.row}>
@@ -62,10 +49,7 @@ export function ControlsRow({ onSubmit }: ControlsRowProps) {
 
       <button className={styles.cta} onClick={onSubmit} disabled={disabled}>
         {loading ? (
-          <>
-            <span className={styles.pulseOrb} />
-            <span>{LOADING_LABELS[labelIdx]}</span>
-          </>
+          <span className={styles.spinner} />
         ) : (
           <>
             <SparkleIcon size={14} />
