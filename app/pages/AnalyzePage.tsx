@@ -4,6 +4,7 @@ import { analyzeVibe, RateLimitApiError } from '../lib/api';
 import { InputCard } from '../components/analyze/InputCard';
 import { MoodSection } from '../components/analyze/MoodSection';
 import { ResultsSection } from '../components/analyze/ResultsSection';
+import { ResultDialog } from '../components/analyze/ResultDialog';
 import { AudioPlayer } from '../components/analyze/AudioPlayer';
 import type { AnalyzeResult, HistoryEntry } from '../types/api';
 import styles from './AnalyzePage.module.css';
@@ -13,9 +14,16 @@ export function AnalyzePage() {
   const { loading, inputMode, textValue, imageFile } = state;
 
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogError, setDialogError] = useState<string | null>(null);
 
   function handlePlayToggle(id: string) {
     setPlayingId((prev) => (prev === id ? null : id));
+  }
+
+  function handleDialogConfirm() {
+    setDialogOpen(false);
+    setDialogError(null);
   }
 
   const playingTrack = state.result?.tracks.find((t) => t.id === playingId) ?? null;
@@ -26,8 +34,9 @@ export function AnalyzePage() {
     if (inputMode === 'text' && textValue.trim() === '') return;
     if (inputMode === 'image' && imageFile === null) return;
 
+    setDialogOpen(true);
     dispatch({ type: 'submit' });
-    const minDelay = new Promise<void>((resolve) => setTimeout(resolve, 400));
+
     try {
       const { data: response, headers } = await analyzeVibe({
         mode: inputMode,
@@ -36,8 +45,6 @@ export function AnalyzePage() {
         market: state.market,
         limit: state.trackCount,
       });
-
-      await minDelay;
 
       const ts = Date.now();
       const result: AnalyzeResult = {
@@ -67,12 +74,13 @@ export function AnalyzePage() {
       }
 
       setPlayingId(null);
+      setDialogOpen(false);
     } catch (err) {
-      await minDelay;
+      dispatch({ type: 'submitFailed' });
       if (err instanceof RateLimitApiError) {
-        dispatch({ type: 'addToast', payload: err.body });
+        setDialogError('已達使用上限，請稍後再試');
       } else {
-        dispatch({ type: 'addToast', payload: '分析失敗，請稍後再試' });
+        setDialogError('後端服務無回應，請確認服務是否啟動');
       }
     }
   }, [loading, inputMode, textValue, imageFile, state.market, state.trackCount, dispatch]);
@@ -91,29 +99,39 @@ export function AnalyzePage() {
   }, []);
 
   return (
-    <main className={styles.page}>
-      <header className={styles.pageHeader}>
-        <span className={styles.eyebrow}>Vibe Analysis</span>
-        <h1 className={styles.title}>What's the vibe?</h1>
-        <p className={styles.subtitle}>
-          Describe your mood or drop an image — we'll find your soundtrack.
-        </p>
-      </header>
+    <>
+      <main className={styles.page}>
+        <header className={styles.pageHeader}>
+          <span className={styles.eyebrow}>Vibe Analysis</span>
+          <h1 className={styles.title}>What's the vibe?</h1>
+          <p className={styles.subtitle}>
+            Describe your mood or drop an image — we'll find your soundtrack.
+          </p>
+        </header>
 
-      <div className={styles.analyzeGrid}>
-        <div className={styles.inputCol}>
-          <InputCard onSubmit={handleSubmit} />
+        <div className={styles.analyzeGrid}>
+          <div className={styles.inputCol}>
+            <InputCard onSubmit={handleSubmit} />
+          </div>
+          <div className={styles.moodCol}>
+            <MoodSection />
+          </div>
         </div>
-        <div className={styles.moodCol}>
-          <MoodSection />
-        </div>
-      </div>
 
-      <section className={styles.resultsSection}>
-        <ResultsSection playingId={playingId} onPlayToggle={handlePlayToggle} />
-      </section>
+        <section className={styles.resultsSection}>
+          <ResultsSection playingId={playingId} onPlayToggle={handlePlayToggle} />
+        </section>
 
-      <AudioPlayer src={previewSrc} onEnded={() => setPlayingId(null)} />
-    </main>
+        <AudioPlayer src={previewSrc} onEnded={() => setPlayingId(null)} />
+      </main>
+
+      {dialogOpen && (
+        <ResultDialog
+          loading={loading}
+          error={dialogError}
+          onConfirm={handleDialogConfirm}
+        />
+      )}
+    </>
   );
 }

@@ -8,9 +8,34 @@ interface ResultsSectionProps {
   onPlayToggle: (id: string) => void;
 }
 
+function SongCardSkeleton() {
+  return (
+    <div className={styles.skeletonCard}>
+      <div className={styles.skeletonCover} />
+      <div className={styles.skeletonBody}>
+        <div className={`${styles.skeletonLine} ${styles.skeletonLineLg}`} />
+        <div className={`${styles.skeletonLine} ${styles.skeletonLineSm}`} />
+        <div className={`${styles.skeletonLine} ${styles.skeletonLineMd}`} />
+      </div>
+    </div>
+  );
+}
+
 export function ResultsSection({ playingId, onPlayToggle }: ResultsSectionProps) {
   const { state } = useApp();
-  const { result } = state;
+  const { result, loading, trackCount } = state;
+
+  if (loading) {
+    return (
+      <div className={styles.section}>
+        <div className={styles.grid}>
+          {Array.from({ length: trackCount }).map((_, i) => (
+            <SongCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (result === null) {
     return (

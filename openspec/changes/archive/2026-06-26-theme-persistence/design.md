@@ -38,8 +38,12 @@
 
 **localStorage 讀寫分離**
 - `src/lib/storage.ts` 集中管理三把 key 的 serialise/deserialise
+- 三把 key 完整名稱：
+  - `vibetrack:history:v3` — HistoryEntry[]
+  - `vibetrack:prefs:v3` — `{ theme: Theme }`
+  - `vibetrack:ratetimes:v3` — number[]（API 呼叫 timestamp 陣列）
 - 每次讀取 try/catch：`JSON.parse` 失敗 → 回傳 null/default
-- history 寫入前 slice(-50) 保持上限
+- history 寫入前 slice(0, 50) 保持上限
 
 **`rateTimes` 的 tickRate 守衛**
 - reducer 的 `tickRate` action 先過濾過期 timestamp（`> Date.now() - windowMs`）

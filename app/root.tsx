@@ -3,14 +3,31 @@ import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration }
 import { AppProvider } from './store/AppContext';
 import { useApp } from './store/AppContext';
 import { getHealth, getRateLimit } from './lib/api';
+import { loadHistory, loadPrefs, loadRateTimes } from './lib/storage';
+import { applyTheme } from './lib/themes';
 import { Atmosphere } from './components/layout/Atmosphere';
 import { Topbar } from './components/layout/Topbar';
 import { RateLimitToast } from './components/ui/RateLimitToast';
 import { BootingScreen } from './components/ui/BootingScreen';
+import { TweaksPanel } from './components/ui/TweaksPanel';
 import './styles/index.css';
 
 function AppInit() {
   const { dispatch } = useApp();
+
+  useEffect(() => {
+    const history = loadHistory();
+    if (history) dispatch({ type: 'restoreHistory', entries: history });
+
+    const prefs = loadPrefs();
+    if (prefs) {
+      dispatch({ type: 'restorePrefs', prefs });
+      applyTheme(prefs.theme);
+    }
+
+    const rateTimes = loadRateTimes();
+    if (rateTimes) dispatch({ type: 'restoreRateTimes', times: rateTimes });
+  }, [dispatch]);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,6 +98,7 @@ export default function Root() {
       <Topbar />
       <Outlet />
       <RateLimitToast />
+      <TweaksPanel />
     </AppProvider>
   );
 }

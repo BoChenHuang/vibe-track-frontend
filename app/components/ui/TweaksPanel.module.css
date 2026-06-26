@@ -1,0 +1,103 @@
+.trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-2);
+  color: var(--ink-2);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-soft);
+}
+
+.btn:hover {
+  color: var(--ink-0);
+  border-color: var(--neon-c);
+  box-shadow: 0 0 0 1px var(--neon-c), var(--shadow-soft);
+}
+
+.panel {
+  background: var(--bg-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-m);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-soft);
+  min-width: 180px;
+}
+
+.panelLabel {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0 4px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  outline: none;
+}
+
+.swatch:hover {
+  background: var(--surface-2);
+}
+
+.swatchActive {
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
+
+.swatchBar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.swatchName {
+  flex: 1;
+  font-size: 13px;
+  color: var(--ink-1);
+  text-align: left;
+}
+
+.swatchTick {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--neon-c);
+}

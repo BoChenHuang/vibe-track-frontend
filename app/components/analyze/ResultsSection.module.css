@@ -2,6 +2,53 @@
   /* full-width below analyze grid */
 }
 
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeletonCard {
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+}
+
+.skeletonCover {
+  aspect-ratio: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(122, 92, 255, 0.08) 0px,
+    rgba(122, 92, 255, 0.18) 300px,
+    rgba(122, 92, 255, 0.08) 600px
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+.skeletonBody {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeletonLine {
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0px,
+    rgba(255, 255, 255, 0.09) 300px,
+    rgba(255, 255, 255, 0.04) 600px
+  );
+  background-size: 1200px 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+.skeletonLineLg { width: 80%; height: 14px; }
+.skeletonLineSm { width: 50%; height: 11px; }
+.skeletonLineMd { width: 90%; height: 36px; border-radius: 4px; }
+
 .header {
   display: flex;
   align-items: center;

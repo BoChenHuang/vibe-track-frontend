@@ -116,4 +116,8 @@ export type AppAction =
   | { type: 'updateRateLimit'; remaining: number | null; limit: number | null; resetAt: number | null }
   | { type: 'addToast'; payload: RateLimitError | string }
   | { type: 'dismissToast'; id: string }
-  | { type: 'setBootingStatus'; status: BootingStatus };
+  | { type: 'setBootingStatus'; status: BootingStatus }
+  | { type: 'submitFailed' }
+  | { type: 'restoreHistory'; entries: HistoryEntry[] }
+  | { type: 'restorePrefs'; prefs: { theme: Theme } }
+  | { type: 'restoreRateTimes'; times: number[] };

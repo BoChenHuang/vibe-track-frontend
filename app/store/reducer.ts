@@ -1,4 +1,6 @@
-import type { AppAction, AppState } from '../types/api';
+import type { AppAction, AppState, HistoryEntry } from '../types/api';
+import { applyTheme } from '../lib/themes';
+import { saveHistory, savePrefs, saveRateTimes } from '../lib/storage';
 
 export const initialState: AppState = {
   page: 'analyze',
@@ -21,6 +23,8 @@ export const initialState: AppState = {
   theme: 'neon',
 };
 
+const RATE_WINDOW_MS = 3_600_000;
+
 export function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
     case 'setPage':
@@ -35,20 +39,33 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, market: action.value };
     case 'setTrackCount':
       return { ...state, trackCount: action.value };
-    case 'setTheme':
+    case 'setTheme': {
+      applyTheme(action.theme);
+      savePrefs({ theme: action.theme });
       return { ...state, theme: action.theme };
-    case 'tickRate':
-      return state;
+    }
+    case 'tickRate': {
+      const now = Date.now();
+      const filtered = state.rateTimes.filter((t) => t > now - RATE_WINDOW_MS);
+      if (filtered.length === state.rateTimes.length) return state;
+      saveRateTimes(filtered);
+      return { ...state, rateTimes: filtered };
+    }
     case 'submit':
       return { ...state, loading: true };
-    case 'submitResolved':
+    case 'submitFailed':
+      return { ...state, loading: false };
+    case 'submitResolved': {
+      const newHistory: HistoryEntry[] = [action.entry, ...state.history];
+      saveHistory(newHistory);
       return {
         ...state,
         loading: false,
         result: action.result,
-        history: [action.entry, ...state.history],
+        history: newHistory,
         usage: state.usage + 1,
       };
+    }
     case 'addToast':
       return {
         ...state,
@@ -68,6 +85,12 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           ts: action.entry.ts,
         },
       };
+    case 'restoreHistory':
+      return { ...state, history: action.entries };
+    case 'restorePrefs':
+      return { ...state, theme: action.prefs.theme };
+    case 'restoreRateTimes':
+      return { ...state, rateTimes: action.times };
     case 'force429':
       return { ...state, usage: state.maxUsage };
     case 'updateRateLimit':
