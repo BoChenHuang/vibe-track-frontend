@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useApp } from '../store/AppContext';
 import { analyzeVibe, RateLimitApiError } from '../lib/api';
+import { saveImage } from '../lib/imageStore';
 import { InputCard } from '../components/analyze/InputCard';
 import { MoodSection } from '../components/analyze/MoodSection';
 import { ResultsSection } from '../components/analyze/ResultsSection';
@@ -63,6 +64,10 @@ export function AnalyzePage() {
         tracks: response.tracks,
       };
       dispatch({ type: 'submitResolved', result, entry });
+
+      if (inputMode === 'image' && imageFile !== null) {
+        void saveImage(entry.id, imageFile);
+      }
 
       if (headers.remaining !== null || headers.limit !== null) {
         dispatch({

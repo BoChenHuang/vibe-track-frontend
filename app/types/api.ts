@@ -120,4 +120,5 @@ export type AppAction =
   | { type: 'submitFailed' }
   | { type: 'restoreHistory'; entries: HistoryEntry[] }
   | { type: 'restorePrefs'; prefs: { theme: Theme } }
-  | { type: 'restoreRateTimes'; times: number[] };
+  | { type: 'restoreRateTimes'; times: number[] }
+  | { type: 'restoreImageFile'; file: File };

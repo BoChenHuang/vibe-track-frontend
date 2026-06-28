@@ -78,6 +78,9 @@ export function appReducer(state: AppState, action: AppAction): AppState {
       return {
         ...state,
         page: 'analyze',
+        inputMode: action.entry.type,
+        textValue: action.entry.type === 'text' ? action.entry.input : state.textValue,
+        market: action.entry.market,
         result: {
           mood: action.entry.mood,
           tracks: action.entry.tracks,
@@ -85,6 +88,8 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           ts: action.entry.ts,
         },
       };
+    case 'restoreImageFile':
+      return { ...state, imageFile: action.file };
     case 'restoreHistory':
       return { ...state, history: action.entries };
     case 'restorePrefs':

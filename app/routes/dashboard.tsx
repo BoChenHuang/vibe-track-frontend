@@ -1,9 +1,8 @@
 import type { MetaFunction } from 'react-router';
+import { DashboardPage } from '../pages/DashboardPage';
 
-export const meta: MetaFunction = () => [
-  { title: 'Dashboard — VibeTrack' },
-];
+export const meta: MetaFunction = () => [{ title: 'Dashboard — VibeTrack' }];
 
-export default function DashboardPage() {
-  return <div>Dashboard</div>;
+export default function DashboardRoute() {
+  return <DashboardPage />;
 }
