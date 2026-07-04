@@ -1,1 +1,0 @@
-import{O as e,t}from"./jsx-runtime-Cc6DCyMV.js";var n=t(),r=()=>[{title:`VibeTrack`},{name:`description`,content:`分析你的情緒，獲得 Spotify 歌曲推薦`}],i=e(function(){return(0,n.jsx)(`div`,{children:`Analyze`})});export{i as default,r as meta};
